@@ -79,5 +79,10 @@ IVA, `Ctrl+Invio` nuovo scontrino, `Alt+A` modalità avanzata.
 
 GNU General Public License v3.0, see / vedi [LICENSE](LICENSE).
 
+The bundled fonts (Archivo, Courier Prime, DSEG7 Classic) are licensed separately under the
+SIL Open Font License 1.1, see [web/fonts/README.md](web/fonts/README.md).
+I font inclusi (Archivo, Courier Prime, DSEG7 Classic) hanno una licenza separata, la SIL
+Open Font License 1.1, vedi [web/fonts/README.md](web/fonts/README.md).
+
 Olivetti and Logos are trademarks of their respective owners; this project is not affiliated.
 Olivetti e Logos sono marchi dei rispettivi titolari; questo progetto non è affiliato.
