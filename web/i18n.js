@@ -141,6 +141,7 @@
         'settings.currencyPos.before': 'Prima (€ 1.234,56)',
         'settings.advancedDefault': 'Modalità avanzata',
         'settings.showHints': 'Suggerimenti tastiera',
+        'settings.vibrate': 'Vibrazione dei tasti',
         'settings.data': 'Dati',
         'settings.export': 'Esporta tutto (JSON)',
         'settings.exportBtn': 'Scarica backup',
@@ -175,7 +176,9 @@
         'toast.storageOff': 'Salvataggio non disponibile in questo browser',
         'toast.restored': 'Scontrino ripreso',
         'toast.offline': 'Pronta per l\'uso offline',
-        'toast.update': 'Nuova versione disponibile: ricarica la pagina'
+        'update.available': 'Nuova versione disponibile',
+        'update.apply': 'Aggiorna',
+        'update.later': 'Più tardi'
       }
     },
     en: {
@@ -312,6 +315,7 @@
         'settings.currencyPos.before': 'Before (€ 1,234.56)',
         'settings.advancedDefault': 'Advanced mode',
         'settings.showHints': 'Keyboard hints',
+        'settings.vibrate': 'Key vibration',
         'settings.data': 'Data',
         'settings.export': 'Export everything (JSON)',
         'settings.exportBtn': 'Download backup',
@@ -346,7 +350,9 @@
         'toast.storageOff': 'Saving is not available in this browser',
         'toast.restored': 'Tape resumed',
         'toast.offline': 'Ready for offline use',
-        'toast.update': 'New version available: reload the page'
+        'update.available': 'New version available',
+        'update.apply': 'Update',
+        'update.later': 'Later'
       }
     }
   };

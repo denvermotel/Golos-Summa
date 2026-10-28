@@ -7,7 +7,7 @@
   const I = window.GolosI18n;
   const t = I.t;
 
-  const APP_VERSION = '0.1.0';
+  const APP_VERSION = '0.1.1';
   const DATA_FORMAT = 2;
   const KEY_CURRENT = 'golos:current';
   const KEY_ARCHIVE = 'golos:archive';
@@ -42,7 +42,8 @@
     currencyPos: 'after',
     advancedMode: false,
     showHints: true,
-    displayFont: 'plain'
+    displayFont: 'plain',
+    vibrate: true
   };
 
   let settings = cloneSettings(DEFAULT_SETTINGS);
@@ -147,6 +148,7 @@
     if (raw.currencyPos === 'before' || raw.currencyPos === 'after') s.currencyPos = raw.currencyPos;
     if (typeof raw.advancedMode === 'boolean') s.advancedMode = raw.advancedMode;
     if (typeof raw.showHints === 'boolean') s.showHints = raw.showHints;
+    if (typeof raw.vibrate === 'boolean') s.vibrate = raw.vibrate;
     if (raw.displayFont === 'plain' || raw.displayFont === 'segment') s.displayFont = raw.displayFont;
     return s;
   }
@@ -860,6 +862,9 @@
     $('set-lang').value = I.language();
     $('set-advanced').checked = settings.advancedMode;
     $('set-hints').checked = settings.showHints;
+    $('set-vibrate').checked = settings.vibrate;
+    // neither the Vibration API nor the iPhone switch haptic: nothing to switch
+    $('row-vibrate').hidden = !('vibrate' in navigator) && !HAS_SWITCH_HAPTIC;
     $('set-decimals').value = settings.decimals;
     $('set-rounding').value = settings.rounding;
     $('set-currency').value = settings.currency;
@@ -875,6 +880,7 @@
     s.lang = $('set-lang').value;
     s.advancedMode = $('set-advanced').checked;
     s.showHints = $('set-hints').checked;
+    s.vibrate = $('set-vibrate').checked;
     s.decimals = $('set-decimals').value;
     s.rounding = $('set-rounding').value;
     s.currency = $('set-currency').value.trim() || '€';
@@ -915,13 +921,29 @@
     else if (d.cmd) command(d.cmd);
   }
 
+  // iPhone has no Vibration API; since iOS 18 toggling a native switch
+  // gives a light haptic tick. It must run inside the click (user activation).
+  const HAS_SWITCH_HAPTIC = 'switch' in document.createElement('input');
+  function hapticTick() {
+    if (HAS_SWITCH_HAPTIC) $('haptic-label').click();
+  }
+
   function bind() {
     const keypad = $('keypad');
     // keep focus where it is, so Enter on the keyboard never re-clicks a key
     keypad.addEventListener('mousedown', (e) => { if (e.target.closest('.k')) e.preventDefault(); });
+    // light tap on touch screens only; on pointerdown so it comes with the finger
+    let lastPointer = '';
+    keypad.addEventListener('pointerdown', (e) => {
+      lastPointer = e.pointerType;
+      if (e.pointerType === 'touch' && settings.vibrate && navigator.vibrate && e.target.closest('.k')) navigator.vibrate(10);
+    });
     keypad.addEventListener('click', (e) => {
       const b = e.target.closest('.k');
-      if (b) keypadClick(b);
+      if (!b) return;
+      if (lastPointer === 'touch' && settings.vibrate && !navigator.vibrate) hapticTick();
+      lastPointer = '';
+      keypadClick(b);
     });
     $('sel-dec').addEventListener('click', (e) => { const b = e.target.closest('.sel-btn'); if (b) setDecimals(b.dataset.dec); });
     $('sel-iva').addEventListener('click', (e) => { const b = e.target.closest('.sel-btn'); if (b) setVat(parseInt(b.dataset.iva, 10)); });
@@ -1057,15 +1079,48 @@
 
   // ---------------------------------------------------------------- PWA
 
+  const KEY_UPDATE_CHECK = 'golos:updateCheck';
+
+  // A new version waits until the user presses Update: reloading on its own
+  // could drop a number being typed. The tape is already saved.
+  function showUpdateBar(reg) {
+    const bar = $('update-bar');
+    bar.hidden = false;
+    $('update-apply').onclick = () => {
+      if (!reg.waiting) { location.reload(); return; }
+      navigator.serviceWorker.addEventListener('controllerchange', () => location.reload(), { once: true });
+      reg.waiting.postMessage({ type: 'skipWaiting' });
+    };
+    $('update-later').onclick = () => { bar.hidden = true; };
+  }
+
+  // Installed apps are rarely reloaded, so the check runs at the first
+  // launch or resume of each day, not only on page load.
+  function dailyUpdateCheck(reg) {
+    const today = new Date().toISOString().slice(0, 10);
+    let last = null;
+    try { last = localStorage.getItem(KEY_UPDATE_CHECK); } catch (e) { /* storage off */ }
+    if (last === today) return;
+    try { localStorage.setItem(KEY_UPDATE_CHECK, today); } catch (e) { /* storage off */ }
+    reg.update().catch(() => { /* offline: try again tomorrow */ });
+  }
+
   function registerServiceWorker() {
     if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
     navigator.serviceWorker.register('sw.js').then(reg => {
+      if (reg.waiting && navigator.serviceWorker.controller) showUpdateBar(reg);
       reg.addEventListener('updatefound', () => {
         const w = reg.installing;
         if (!w) return;
         w.addEventListener('statechange', () => {
-          if (w.state === 'installed') toast(navigator.serviceWorker.controller ? t('toast.update') : t('toast.offline'));
+          if (w.state !== 'installed') return;
+          if (navigator.serviceWorker.controller) showUpdateBar(reg);
+          else toast(t('toast.offline'));
         });
+      });
+      dailyUpdateCheck(reg);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') dailyUpdateCheck(reg);
       });
     }).catch(() => { /* offline support is optional */ });
   }

@@ -2,7 +2,7 @@
    Bump CACHE on every release so clients pick up the new files. */
 'use strict';
 
-const CACHE = 'golos-summa-v0.1.0-r3';
+const CACHE = 'golos-summa-v0.1.1';
 const SHELL = [
   './',
   './index.html',
@@ -25,6 +25,11 @@ const SHELL = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)));
+});
+
+// the page asks for it when the user presses Update
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'skipWaiting') self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {

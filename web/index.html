@@ -271,6 +271,7 @@
           </label>
           <label class="set-row"><span data-i18n="settings.advancedDefault"></span><input type="checkbox" id="set-advanced"></label>
           <label class="set-row"><span data-i18n="settings.showHints"></span><input type="checkbox" id="set-hints"></label>
+          <label class="set-row" id="row-vibrate"><span data-i18n="settings.vibrate"></span><input type="checkbox" id="set-vibrate"></label>
         </div>
         <div class="set-group">
           <h3 data-i18n="settings.display"></h3>
@@ -348,7 +349,13 @@
 </div>
 
 <div class="print-area" id="print-area"></div>
+<div class="update-bar" id="update-bar" role="status" hidden>
+  <span data-i18n="update.available"></span>
+  <button class="btn btn-ghost" id="update-later" data-i18n="update.later"></button>
+  <button class="btn btn-primary" id="update-apply" data-i18n="update.apply"></button>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
+<label class="sr-only" id="haptic-label" aria-hidden="true"><input type="checkbox" switch tabindex="-1"></label>
 
 <script src="engine.js"></script>
 <script src="i18n.js"></script>
