@@ -2,7 +2,7 @@
    Bump CACHE on every release so clients pick up the new files. */
 'use strict';
 
-const CACHE = 'golos-summa-v0.1.1';
+const CACHE = 'golos-summa-v0.1.1-r2';
 const SHELL = [
   './',
   './index.html',

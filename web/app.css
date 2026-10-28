@@ -491,6 +491,8 @@ body.hints-off .hints-show { display: block; }
 .set-row select, .set-row input[type="text"] { width: 170px; }
 .set-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 .set-data { margin-top: 22px; }
+.set-about a { color: var(--accent); overflow-wrap: anywhere; text-align: right; }
+.set-about .set-row > span:last-child { text-align: right; }
 .iva-presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .iva-presets label { font-family: var(--f-mono); font-size: 10px; color: var(--ink-muted); display: flex; flex-direction: column; gap: 3px; }
 .iva-presets input { width: 100%; text-align: center; font-family: var(--f-mono); }
@@ -550,7 +552,8 @@ body.hints-off .hints-show { display: block; }
 
 /* ---------- Update bar ---------- */
 .update-bar {
-  position: fixed; right: 16px; bottom: calc(var(--hints-h) + 16px); z-index: 150;
+  /* below the dialogs (z-index 100), so it never covers their buttons */
+  position: fixed; right: 16px; bottom: calc(var(--hints-h) + 16px); z-index: 90;
   display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px;
   background: var(--bg-modal); color: var(--ink); border: 1px solid var(--line);
   border-radius: var(--r); box-shadow: 0 8px 24px rgba(0,0,0,0.25); font-size: 13px;

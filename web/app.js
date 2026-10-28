@@ -842,6 +842,7 @@
     $('mode-switch').setAttribute('aria-checked', settings.advancedMode);
     document.body.classList.toggle('hints-off', !settings.showHints);
     $('app-version').textContent = 'v' + APP_VERSION;
+    $('about-version').textContent = APP_VERSION;
     // decimal key shows the locale separator
     $('keypad').querySelector('[data-k="point"]').textContent = I.sep().point;
     renderTape();
