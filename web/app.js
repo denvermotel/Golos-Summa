@@ -323,6 +323,7 @@
     const roll = $('tape-roll');
     roll.replaceChildren(...tape.rows.map(tapeRowElement));
     renderTapeHeader();
+    renderMiniTape();
     scrollTapeToEnd();
   }
 
@@ -330,7 +331,22 @@
     const roll = $('tape-roll');
     rows.forEach((r, k) => roll.appendChild(tapeRowElement(r, firstIndex + k)));
     renderTapeHeader();
+    renderMiniTape();
     scrollTapeToEnd();
+  }
+
+  // Last rows of the tape above the display, shown on phones where the tape
+  // has its own view. Read-only: a tap opens the full tape.
+  const MINI_ROWS = 40;
+  function renderMiniTape() {
+    const box = $('mini-tape');
+    box.replaceChildren(...tape.rows.slice(-MINI_ROWS).map(r => {
+      const v = rowView(r);
+      const row = el('div', 'mt-row ' + v.cls.join(' '));
+      row.append(el('span', 'mt-label', v.label), el('span', 'mt-val', v.value), el('span', 'mt-op', v.op));
+      return row;
+    }));
+    box.scrollTop = box.scrollHeight;
   }
 
   function scrollTapeToEnd() {
@@ -880,6 +896,7 @@
         startEdit(parseInt(row.dataset.index, 10));
       }
     });
+    $('mini-tape').addEventListener('click', () => document.querySelector('.view-btn[data-view="tape"]').click());
     $('tape-title').addEventListener('input', (e) => { tape.title = e.target.value.slice(0, 80); saveCurrent(); });
 
     $('btn-tear').addEventListener('click', tearTape);

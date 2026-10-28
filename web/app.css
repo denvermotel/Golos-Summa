@@ -528,9 +528,41 @@ body.hints-off .hints-show { display: block; }
 @media (max-width: 380px) {
   .mode-toggle { display: none; }
 }
+/* Mini tape: hidden on wide screens, where the full tape is always visible */
+.mini-tape { display: none; }
+
+@media (max-width: 760px) {
+  /* Square keys sized on the width, kept at the bottom within thumb reach;
+     the height left over goes to the last rows of the tape. */
+  :root {
+    --key-h: calc((100vw - 20px - 4 * var(--key-gap)) / 5);
+    --key-h-adv: calc((100vw - 20px - 5 * var(--key-gap)) / 6);
+  }
+  .keypad { flex: 0 1 auto; grid-template-rows: repeat(7, minmax(0, var(--key-h-adv))); }
+  .basic-mode .keypad { grid-template-rows: repeat(6, minmax(0, var(--key-h))); }
+  .mini-tape {
+    display: block; flex: 1 1 0; min-height: 0; overflow-y: auto; cursor: pointer;
+    margin-bottom: 8px; padding: 2px 8px; font-family: var(--f-mono); font-size: 13px;
+    line-height: 1.6; color: var(--sel-ink); font-variant-numeric: tabular-nums;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 28px);
+    mask-image: linear-gradient(to bottom, transparent, #000 28px);
+  }
+  .mt-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 2.4em; column-gap: 8px; }
+  .mt-label { color: var(--kbd-label); font-size: 11px; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mt-val { text-align: right; white-space: nowrap; }
+  .mt-op { color: var(--kbd-label); font-weight: 700; }
+  .mt-row.t-total .mt-val { font-weight: 700; border-top: 1px solid var(--kbd-label); }
+  html[data-skin="mela"] .mini-tape { margin: 0; padding: 8px 18px 0; background: var(--kbd-panel); }
+  html[data-skin="mela"][data-theme="dark"] .mini-tape { background: #2a2a2a; }
+}
+
 @media (max-width: 760px), (max-height: 700px) {
   .k-sub, .k-iva-current { display: none; }
 }
 @media (max-width: 560px) {
   .brand { display: none; }
+}
+/* short phones: no room for the mini tape, the keys keep the space */
+@media (max-width: 760px) and (max-height: 680px) {
+  .mini-tape { display: none; }
 }
