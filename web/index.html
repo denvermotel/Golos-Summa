@@ -9,9 +9,6 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="app.css">
 <link rel="stylesheet" href="skins.css">
 </head>
@@ -20,7 +17,6 @@
 <header class="app-header">
   <div class="brand">
     <span class="brand-mark">Golos-Summa</span>
-    <span class="brand-tag" data-i18n="app.tagline"></span>
     <span class="brand-version" id="app-version"></span>
   </div>
   <nav class="view-switch" aria-label="view">
@@ -92,7 +88,8 @@
           <span class="ind on" id="ind-dec"></span>
         </div>
       </div>
-      <div class="disp-main" id="disp-main" aria-live="polite">0</div>
+      <div class="disp-main" id="disp-main" aria-hidden="true">0</div>
+      <span class="sr-only" id="disp-sr" aria-live="polite"></span>
       <div class="disp-sub">
         <span class="pending" id="disp-pending"></span>
         <span class="disp-msg" id="disp-msg" role="alert"></span>
@@ -249,6 +246,14 @@
               <option value="classic">Classica</option>
               <option value="finestra">Finestra</option>
               <option value="mela">Mela</option>
+              <option value="rilievo">Rilievo</option>
+              <option value="vetro">Vetro</option>
+            </select>
+          </label>
+          <label class="set-row" id="row-disp-font"><span data-i18n="settings.displayFont"></span>
+            <select id="set-disp-font">
+              <option value="plain" data-i18n="settings.displayFont.plain"></option>
+              <option value="segment" data-i18n="settings.displayFont.segment"></option>
             </select>
           </label>
           <label class="set-row"><span data-i18n="settings.theme"></span>

@@ -2,19 +2,19 @@
    (light | dark) is resolved by app.js from the theme setting.
    The classic skin is the default in app.css and has a single palette. */
 
-/* =================== Finestra: flat desktop style, rounded keys, accent "=" =================== */
+/* =================== Finestra: flat desktop calculator, square keys on 2px gaps =================== */
 html[data-skin="finestra"] {
   --f-display: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
   --f-body: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
   --f-key: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
   --f-disp: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
   --f-mono: 'Cascadia Mono', Consolas, ui-monospace, monospace;
-  --r: 4px;
-  --r-key: 4px;
+  --r: 2px;
+  --r-key: 1px;
   --key-gap: 2px;
-  --key-shadow: 0 1px 0 rgba(0,0,0,0.06);
+  --key-shadow: none;
   --key-shadow-press: none;
-  --key-num-size: 20px;
+  --key-num-size: 22px;
   --disp-size: 46px;
   --paper-tear: none;
   --disp-border: transparent;
@@ -36,19 +36,19 @@ html[data-skin="finestra"][data-theme="light"] {
   --accent-deep: #004c94;
   --accent-ink: #ffffff;
   --accent-soft: rgba(0,95,184,0.08);
-  --kbd-bg: #f3f3f3;
+  --kbd-bg: #e6e6e6;
   --kbd-panel: #ebebeb;
   --kbd-border: #e0e0e0;
   --kbd-label: #5d5d5d;
   --sel-ink: #1a1a1a;
   --key-num: #ffffff;
-  --key-num-press: #f5f5f5;
+  --key-num-press: #c8c8c8;
   --key-num-ink: #1a1a1a;
-  --key-fn: #f9f9f9;
-  --key-fn-press: #f0f0f0;
+  --key-fn: #f0f0f0;
+  --key-fn-press: #c8c8c8;
   --key-fn-ink: #1a1a1a;
-  --key-op: #f9f9f9;
-  --key-op-press: #f0f0f0;
+  --key-op: #f0f0f0;
+  --key-op-press: #c8c8c8;
   --key-op-ink: #1a1a1a;
   --key-eq: #005fb8;
   --key-eq-press: #1a6fc0;
@@ -78,19 +78,19 @@ html[data-skin="finestra"][data-theme="dark"] {
   --accent-deep: #47b1e8;
   --accent-ink: #000000;
   --accent-soft: rgba(76,194,255,0.10);
-  --kbd-bg: #202020;
+  --kbd-bg: #1f1f1f;
   --kbd-panel: #2b2b2b;
   --kbd-border: #333333;
   --kbd-label: #c5c5c5;
   --sel-ink: #ffffff;
-  --key-num: #3b3b3b;
-  --key-num-press: #323232;
+  --key-num: #0b0b0b;
+  --key-num-press: #444444;
   --key-num-ink: #ffffff;
-  --key-fn: #323232;
-  --key-fn-press: #2b2b2b;
+  --key-fn: #171717;
+  --key-fn-press: #444444;
   --key-fn-ink: #ffffff;
-  --key-op: #323232;
-  --key-op-press: #2b2b2b;
+  --key-op: #171717;
+  --key-op-press: #444444;
   --key-op-ink: #ffffff;
   --key-eq: #4cc2ff;
   --key-eq-press: #47b1e8;
@@ -103,26 +103,30 @@ html[data-skin="finestra"][data-theme="dark"] {
   --disp-dim: #9a9a9a;
   --disp-err: #ff99a4;
 }
-html[data-skin="finestra"] .brand-mark::first-letter { color: inherit; }
-html[data-skin="finestra"] .brand-mark { font-weight: 600; font-size: 18px; letter-spacing: 0; }
-html[data-skin="finestra"] .tape-title-input,
-html[data-skin="finestra"] .arch-title,
-html[data-skin="finestra"] .pr-title { font-style: normal; }
+html[data-skin="finestra"] .brand-mark { font-weight: 600; font-size: 18px; font-stretch: normal; }
+html[data-skin="finestra"] .tape-title-input { font-weight: 400; }
 html[data-skin="finestra"] .disp { box-shadow: none; padding: 6px 4px 4px; }
 html[data-skin="finestra"] .disp-main { font-weight: 600; letter-spacing: 0; }
-html[data-skin="finestra"] .k { font-weight: 400; border: 1px solid rgba(127,127,127,0.12); }
-html[data-skin="finestra"] .k:hover { filter: brightness(1.04); }
-html[data-skin="finestra"][data-theme="dark"] .k:hover { filter: brightness(1.15); }
+html[data-skin="finestra"] .k { font-weight: 400; }
+html[data-skin="finestra"] .k-num { font-weight: 600; }
+/* hover is a flat grey, as on the desktop calculator; the accent key keeps its colour */
+html[data-skin="finestra"][data-theme="light"] .k:not(.k-eq):not(:active):not(.pressed):hover { background: #dadada; }
+html[data-skin="finestra"][data-theme="dark"] .k:not(.k-eq):not(:active):not(.pressed):hover { background: #2e2e2e; }
+html[data-skin="finestra"] .k-eq:hover { filter: brightness(1.08); }
 html[data-skin="finestra"] .k-tot { color: var(--ink); font-weight: 600; }
 html[data-skin="finestra"] .k-op { font-size: 22px; font-weight: 400; }
 html[data-skin="finestra"] .k-eq { font-size: 24px; font-weight: 400; }
-html[data-skin="finestra"] .k:active, html[data-skin="finestra"] .k.pressed { transform: none; opacity: 0.8; }
-html[data-skin="finestra"] .tape-paper { border-radius: 8px; box-shadow: 0 0 0 1px var(--line); }
+html[data-skin="finestra"] .k:active, html[data-skin="finestra"] .k.pressed { transform: none; }
+html[data-skin="finestra"] .k-num:active, html[data-skin="finestra"] .k-num.pressed { background: var(--key-num-press); }
+html[data-skin="finestra"] :is(.k-fn, .k-op, .k-tot):active,
+html[data-skin="finestra"] :is(.k-fn, .k-op, .k-tot).pressed { background: var(--key-fn-press); }
+html[data-skin="finestra"] .tape-paper { border-radius: 2px; box-shadow: 0 0 0 1px var(--line); }
 html[data-skin="finestra"] .tape-row.t-total { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 html[data-skin="finestra"] .tape-foot { border-top: 1px solid var(--line); }
 html[data-skin="finestra"] .calc-zone { border-left: 1px solid var(--line); }
-html[data-skin="finestra"] .sel-group { border-radius: 6px; }
-html[data-skin="finestra"] .modal { border-radius: 8px; border: 1px solid var(--line); }
+html[data-skin="finestra"] .sel-group { border-radius: 2px; }
+html[data-skin="finestra"] .sel-btn { border-radius: 1px; }
+html[data-skin="finestra"] .modal { border-radius: 2px; border: 1px solid var(--line); }
 html[data-skin="finestra"] .hint-item kbd { color: var(--ink-muted); background: var(--line); }
 
 /* =================== Mela: single keypad slab, orange operators, white paper tape =================== */
@@ -133,8 +137,8 @@ html[data-skin="mela"] {
   --f-disp: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --f-mono: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
   --r: 6px;
-  --r-key: 0;
-  --key-gap: 1px;
+  --r-key: 999px;
+  --key-gap: 10px;
   --key-shadow: none;
   --key-shadow-press: none;
   --key-num-size: 22px;
@@ -165,16 +169,16 @@ html[data-skin="mela"][data-theme="dark"] {
   --ink: #f2f2f2;
   --ink-muted: #b0b0b0;
   --ink-subtle: #7a7a7a;
-  --kbd-bg: #1c1c1c;
-  --kbd-panel: #2a2a2a;
+  --kbd-bg: #262626;
+  --kbd-panel: #262626;
   --kbd-border: #3a3a3a;
   --kbd-label: #a0a0a0;
   --sel-ink: #e0e0e0;
-  --key-num: #5e5e60;
-  --key-num-press: #8e8e90;
+  --key-num: #4b4b4d;
+  --key-num-press: #6b6b6d;
   --key-num-ink: #ffffff;
-  --key-fn: #464648;
-  --key-fn-press: #6b6b6d;
+  --key-fn: #69696b;
+  --key-fn-press: #8a8a8c;
   --key-fn-ink: #ffffff;
   --key-t1: #3f4a5a;
   --key-t2: #3d5450;
@@ -197,16 +201,16 @@ html[data-skin="mela"][data-theme="light"] {
   --ink: #1d1d1f;
   --ink-muted: #6e6e73;
   --ink-subtle: #a1a1a6;
-  --kbd-bg: #b8b8b8;
-  --kbd-panel: #d4d4d2;
+  --kbd-bg: #e6e6e6;
+  --kbd-panel: #e6e6e6;
   --kbd-border: #c4c4c4;
   --kbd-label: #4a4a4a;
   --sel-ink: #1d1d1f;
-  --key-num: #f0f0f0;
-  --key-num-press: #c8c8c8;
+  --key-num: #ffffff;
+  --key-num-press: #dadada;
   --key-num-ink: #1d1d1f;
-  --key-fn: #d6d6d4;
-  --key-fn-press: #b4b4b2;
+  --key-fn: #cdcdcd;
+  --key-fn-press: #b3b3b3;
   --key-fn-ink: #1d1d1f;
   --key-t1: #c9d3e0;
   --key-t2: #c6dbd6;
@@ -216,23 +220,55 @@ html[data-skin="mela"][data-theme="light"] {
   --disp-dim: #6e6e73;
   --disp-err: #d70015;
 }
-/* The keypad is a single slab: 1px gaps on a dark body draw the grid lines */
+/* Round keys on a plain panel, like the system calculator */
 html[data-skin="mela"] .calc-zone { padding: 0; border-left: none; }
-html[data-skin="mela"] .disp { margin: 0; padding: 22px 18px 6px; box-shadow: none; background: var(--kbd-panel); border-radius: 0; }
-html[data-skin="mela"][data-theme="dark"] .disp { background: #2a2a2a; }
+html[data-skin="mela"] .disp { margin: 0; padding: 22px 18px 6px; box-shadow: none; background: transparent; border-radius: 0; }
 html[data-skin="mela"] .disp-main { font-weight: 300; letter-spacing: 0; }
 html[data-skin="mela"] .selectors { margin: 0; padding: 8px; background: var(--kbd-panel); gap: 6px; }
 html[data-skin="mela"] .sel-group { border: none; background: rgba(127,127,127,0.12); }
-html[data-skin="mela"] .keypad { background: var(--kbd-bg); padding-top: 1px; }
-html[data-skin="mela"] .k { font-weight: 400; transition: none; }
-html[data-skin="mela"] .k:active, html[data-skin="mela"] .k.pressed { transform: none; }
+html[data-skin="mela"] .sel-btn { border-radius: 999px; }
+html[data-skin="mela"] .keypad { padding: 4px 10px 10px; }
+/* The button fills its cell (unchanged touch area); the circle is drawn by
+   ::before, sized on the cell with container units. Keys spanning rows
+   become capsules as wide as the circles. */
+html[data-skin="mela"] .k {
+  --span: 1;
+  --d: min(100cqw, (100cqh - (var(--span) - 1) * var(--key-gap)) / var(--span));
+  container-type: size; isolation: isolate; background: transparent;
+  font-weight: 400; transition: none; box-shadow: none;
+}
+html[data-skin="mela"] .k::before {
+  content: ''; position: absolute; inset: 0; margin: auto; z-index: -1;
+  width: var(--d); height: min(100cqh, var(--d) * var(--span) + (var(--span) - 1) * var(--key-gap));
+  border-radius: 999px; background: var(--kb);
+}
+html[data-skin="mela"] .k[data-k="plus"] { --span: 3; }
+html[data-skin="mela"] .k[data-k="total"],
+html[data-skin="mela"] .k[data-k="eq"] { --span: 2; }
+html[data-skin="mela"] .k-num { --kb: var(--key-num); }
+html[data-skin="mela"] .k-fn { --kb: var(--key-fn); }
+html[data-skin="mela"] .k-op, html[data-skin="mela"] .k-eq,
+html[data-skin="mela"] .k[data-k="eq"] { --kb: var(--key-op); color: var(--key-op-ink); }
+html[data-skin="mela"] .k-tot.t1 { --kb: var(--key-t1); }
+html[data-skin="mela"] .k-tot.t2 { --kb: var(--key-t2); }
+html[data-skin="mela"] .k-num:active, html[data-skin="mela"] .k-num.pressed { --kb: var(--key-num-press); }
+html[data-skin="mela"] .k-fn:active, html[data-skin="mela"] .k-fn.pressed { --kb: var(--key-fn-press); }
+html[data-skin="mela"] .k-op:active, html[data-skin="mela"] .k-op.pressed,
+html[data-skin="mela"] .k-eq:active, html[data-skin="mela"] .k-eq.pressed,
+html[data-skin="mela"] .k[data-k="eq"]:active, html[data-skin="mela"] .k[data-k="eq"].pressed { --kb: var(--key-op-press); }
+html[data-skin="mela"] .k:active, html[data-skin="mela"] .k.pressed { transform: none; box-shadow: none; filter: none; }
+html[data-skin="mela"] .k:focus-visible { outline: none; }
+html[data-skin="mela"] .k:focus-visible::before { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (max-width: 760px) {
+  html[data-skin="mela"] { --key-gap: 6px; }
+}
 html[data-skin="mela"] .k-fn, html[data-skin="mela"] .k-sub-key { font-size: 14px; }
 html[data-skin="mela"] .k-op { font-size: 26px; font-weight: 400; }
 html[data-skin="mela"] .k-eq { font-size: 26px; font-weight: 400; }
 html[data-skin="mela"] .k-tot { font-weight: 500; color: var(--key-fn-ink); }
-html[data-skin="mela"] .k-iva-current { background: rgba(0,0,0,0.15); }
-html[data-skin="mela"] .brand-mark { font-weight: 600; font-size: 15px; letter-spacing: 0; }
-html[data-skin="mela"] .brand-mark::first-letter { color: inherit; }
+/* the corner badge would sit outside the circle; the rate is on the display */
+html[data-skin="mela"] .k-iva-current { display: none; }
+html[data-skin="mela"] .brand-mark { font-weight: 600; font-size: 15px; font-stretch: normal; }
 html[data-skin="mela"] .app-header { border-bottom: 1px solid rgba(0,0,0,0.25); }
 /* Paper tape: always white paper with dark ink */
 html[data-skin="mela"] .tape-paper {
@@ -244,7 +280,7 @@ html[data-skin="mela"] .tape-row.t-total { border-top: 1px solid #1d1d1f; border
 html[data-skin="mela"] .tape-foot { border-top: 1px solid #e0e0e0; }
 html[data-skin="mela"] .tape-title-input,
 html[data-skin="mela"] .arch-title,
-html[data-skin="mela"] .pr-title { font-style: normal; font-weight: 600; font-size: 16px; }
+html[data-skin="mela"] .pr-title { font-weight: 600; font-size: 16px; }
 html[data-skin="mela"] .modal { border-radius: 10px; border: 1px solid var(--line); }
 html[data-skin="mela"] .hint-item kbd { color: var(--ink-muted); background: var(--line); }
 html[data-skin="mela"][data-theme="light"] .hints-area { color: var(--ink-muted); }
@@ -254,3 +290,176 @@ html[data-skin="mela"] .print-controls { background: var(--bg-field); }
 html[data-skin="mela"] .k-md, html[data-skin="mela"] .k-subtotal { font-size: 22px; }
 html[data-skin="mela"] .tape-paper { --accent: #b35900; --accent-soft: rgba(179,89,0,0.08); }
 html[data-skin="finestra"] .k-md, html[data-skin="finestra"] .k-subtotal { font-size: 22px; font-weight: 400; }
+
+/* =================== Rilievo: grey 1990s desktop calculator, bevelled keys, coloured labels ===================
+   Single light palette. The bevel is drawn with inset shadows, pressed keys invert it. */
+html[data-skin="rilievo"] {
+  color-scheme: light;
+  --f-display: Tahoma, Verdana, 'Segoe UI', sans-serif;
+  --f-body: Tahoma, Verdana, 'Segoe UI', sans-serif;
+  --f-key: Tahoma, Verdana, 'Segoe UI', sans-serif;
+  --f-disp: Tahoma, Verdana, 'Segoe UI', sans-serif;
+  --f-mono: 'Courier New', Courier, monospace;
+  --bg-app: #c0c0c0;
+  --bg-header: #000080;
+  --bg-paper: #ffffff;
+  --bg-modal: #c0c0c0;
+  --bg-field: #ffffff;
+  --paper-line: #e0e0e0;
+  --paper-edge: #808080;
+  --paper-tear: none;
+  --line: rgba(0,0,0,0.25);
+  --ink: #000000;
+  --ink-muted: #404040;
+  --ink-subtle: #606060;
+  --accent: #000080;
+  --accent-deep: #000060;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(0,0,128,0.10);
+  --row-op: #a00000;
+  --kbd-bg: #c0c0c0;
+  --kbd-panel: #c0c0c0;
+  --kbd-border: #808080;
+  --kbd-label: #000000;
+  --sel-ink: #000000;
+  --key-num: #c0c0c0;
+  --key-num-press: #c0c0c0;
+  --key-num-ink: #0000a8;
+  --key-fn: #c0c0c0;
+  --key-fn-press: #c0c0c0;
+  --key-fn-ink: #800080;
+  --key-op: #c0c0c0;
+  --key-op-press: #c0c0c0;
+  --key-op-ink: #a00000;
+  --key-eq: #c0c0c0;
+  --key-eq-press: #c0c0c0;
+  --key-eq-ink: #a00000;
+  --key-t1: #c0c0c0;
+  --key-t2: #c0c0c0;
+  --key-gap: 6px;
+  --r: 0;
+  --r-key: 0;
+  --bevel-out: inset -1px -1px #0a0a0a, inset 1px 1px #ffffff, inset -2px -2px #808080, inset 2px 2px #dfdfdf;
+  --bevel-in: inset 1px 1px #808080, inset -1px -1px #ffffff, inset 2px 2px #0a0a0a, inset -2px -2px #dfdfdf;
+  --key-shadow: var(--bevel-out);
+  --key-shadow-press: inset 1px 1px #0a0a0a, inset -1px -1px #ffffff, inset 2px 2px #808080, inset -2px -2px #dfdfdf;
+  --key-num-size: 18px;
+  --disp-bg: #ffffff;
+  --disp-text: #000000;
+  --disp-glow: transparent;
+  --disp-dim: #404040;
+  --disp-err: #a00000;
+  --disp-border: transparent;
+  --disp-size: 34px;
+}
+/* header as a title bar */
+html[data-skin="rilievo"] .app-header { color: #ffffff; --ink: #ffffff; --ink-muted: #dcdcdc; --line: rgba(255,255,255,0.2); border-bottom: none; }
+html[data-skin="rilievo"] .brand-mark { font-weight: 700; font-size: 15px; font-stretch: normal; }
+html[data-skin="rilievo"] .calc-zone { border-left: 1px solid #808080; }
+html[data-skin="rilievo"] .disp { box-shadow: var(--bevel-in); border: none; border-radius: 0; }
+html[data-skin="rilievo"] .sel-group { border: none; box-shadow: inset 1px 1px #808080, inset -1px -1px #ffffff; }
+html[data-skin="rilievo"] .sel-btn { border-radius: 0; }
+html[data-skin="rilievo"] .sel-btn.active { background: #000080; color: #ffffff; }
+html[data-skin="rilievo"] .k { font-weight: 400; transition: none; }
+/* pressed: inverted bevel and the label moves down-right by one pixel */
+html[data-skin="rilievo"] .k:active, html[data-skin="rilievo"] .k.pressed { transform: none; padding: 2px 0 0 2px; }
+html[data-skin="rilievo"] .k-tot { color: #000080; }
+html[data-skin="rilievo"] .k:is([data-k="div"], [data-k="mul"], [data-k="eq"], [data-k="clear"], [data-k="ce"], [data-k="bksp"],
+  [data-k="mplus"], [data-k="mminus"], [data-k="msub"], [data-k="mtotal"]) { color: #a00000; }
+html[data-skin="rilievo"] .k-iva-current { background: none; color: inherit; }
+html[data-skin="rilievo"] .tape-paper { border-radius: 0; box-shadow: var(--bevel-in); }
+html[data-skin="rilievo"] .tape-row.t-neg .r-val,
+html[data-skin="rilievo"] .tape-row.t-iva,
+html[data-skin="rilievo"] .tape-row.t-iva .r-label { color: #a00000; }
+html[data-skin="rilievo"] .modal { border-radius: 0; box-shadow: var(--bevel-out), 0 8px 24px rgba(0,0,0,0.35); }
+html[data-skin="rilievo"] .modal-head { background: #000080; color: #ffffff; padding: 6px 10px; }
+html[data-skin="rilievo"] .modal-head h2 { font-size: 15px; font-weight: 700; }
+html[data-skin="rilievo"] .modal-head .close { color: #ffffff; }
+html[data-skin="rilievo"] .btn { border-radius: 0; background: #c0c0c0; color: #000000; border: none; box-shadow: var(--bevel-out); }
+html[data-skin="rilievo"] .btn:active { box-shadow: var(--key-shadow-press); }
+html[data-skin="rilievo"] .btn-primary { font-weight: 700; }
+html[data-skin="rilievo"] .btn-danger { color: #a00000; }
+html[data-skin="rilievo"] .arch-item { border-radius: 0; }
+html[data-skin="rilievo"] .hint-item kbd { color: #000000; background: #dfdfdf; }
+
+/* =================== Vetro: 2000s desktop calculator, glossy pale-blue keys =================== */
+html[data-skin="vetro"] {
+  color-scheme: light;
+  --f-display: 'Segoe UI', Tahoma, 'Helvetica Neue', Arial, sans-serif;
+  --f-body: 'Segoe UI', Tahoma, 'Helvetica Neue', Arial, sans-serif;
+  --f-key: 'Segoe UI', Tahoma, 'Helvetica Neue', Arial, sans-serif;
+  --f-disp: Consolas, 'Lucida Console', Menlo, monospace;
+  --f-mono: Consolas, 'Lucida Console', Menlo, monospace;
+  --bg-app: #dfe9f5;
+  --bg-header: #c9dbf0;
+  --bg-paper: #ffffff;
+  --bg-modal: #f0f5fb;
+  --bg-field: #ffffff;
+  --paper-line: #e3e9f1;
+  --paper-edge: #a9b8cc;
+  --paper-tear: none;
+  --line: rgba(30,57,91,0.15);
+  --ink: #1e1e1e;
+  --ink-muted: #44546a;
+  --ink-subtle: #627286;
+  --accent: #1c5fa8;
+  --accent-deep: #154a85;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(28,95,168,0.10);
+  --kbd-bg: #d9e4f1;
+  --kbd-panel: #e8eff8;
+  --kbd-border: #a9b8cc;
+  --kbd-label: #1e395b;
+  --sel-ink: #1e395b;
+  --key-num: #eef3f9;
+  --key-num-press: #c4e5f6;
+  --key-num-ink: #1e395b;
+  --key-fn: #eef3f9;
+  --key-fn-press: #c4e5f6;
+  --key-fn-ink: #1e395b;
+  --key-op: #eef3f9;
+  --key-op-press: #c4e5f6;
+  --key-op-ink: #1e395b;
+  --key-eq: #eef3f9;
+  --key-eq-press: #c4e5f6;
+  --key-eq-ink: #1e395b;
+  --key-t1: #eef3f9;
+  --key-t2: #eef3f9;
+  --key-gap: 6px;
+  --r: 3px;
+  --r-key: 3px;
+  --key-shadow: inset 0 0 0 1px rgba(255,255,255,0.7);
+  --key-shadow-press: inset 0 1px 2px rgba(0,0,0,0.2);
+  --key-num-size: 18px;
+  --disp-bg: #f4f8fc;
+  --disp-text: #000000;
+  --disp-glow: transparent;
+  --disp-dim: #44546a;
+  --disp-err: #b00020;
+  --disp-border: #8e9fb6;
+  --disp-size: 36px;
+}
+html[data-skin="vetro"] .app-header { background: linear-gradient(180deg, #dbe8f6, #c4d8ef); }
+html[data-skin="vetro"] .brand-mark { font-weight: 600; font-size: 16px; font-stretch: normal; }
+html[data-skin="vetro"] .calc-zone { background: linear-gradient(180deg, #e9f0f8, #d3e0ef); border-left: 1px solid #a9b8cc; }
+html[data-skin="vetro"] .disp { box-shadow: inset 0 1px 3px rgba(0,0,0,0.12); background: linear-gradient(180deg, #f7fafd, #e3ecf6); }
+html[data-skin="vetro"] .sel-group { background: rgba(255,255,255,0.5); }
+html[data-skin="vetro"] .sel-btn.active { background: linear-gradient(180deg, #5a9be0, #1c5fa8); color: #ffffff; }
+/* glossy key: the hard stop at 50% draws the highlight band */
+html[data-skin="vetro"] .k {
+  border: 1px solid #8e9fb6; color: #1e395b; font-weight: 400; transition: none;
+  background-image: linear-gradient(180deg, #fbfcfe 0%, #eef3f9 49%, #dfe7f1 50%, #eaf0f7 100%);
+}
+html[data-skin="vetro"] .k:not(:active):not(.pressed):hover {
+  border-color: #3c7fb1;
+  background-image: linear-gradient(180deg, #eaf6fd 0%, #d9f0fc 49%, #bee6fd 50%, #a7d9f5 100%);
+}
+html[data-skin="vetro"] .k:active, html[data-skin="vetro"] .k.pressed {
+  transform: none; border-color: #2c628b;
+  background-image: linear-gradient(180deg, #c4e5f6 0%, #98d1ef 49%, #68b3db 50%, #8fcaea 100%);
+}
+html[data-skin="vetro"] .k-eq { font-weight: 600; }
+html[data-skin="vetro"] .k-iva-current { background: rgba(30,57,91,0.12); }
+html[data-skin="vetro"] .tape-paper { border-radius: 3px; box-shadow: 0 0 0 1px #a9b8cc, 0 2px 6px rgba(30,57,91,0.15); }
+html[data-skin="vetro"] .modal { border-radius: 6px; border: 1px solid #8e9fb6; }
+html[data-skin="vetro"] .hint-item kbd { color: #1e395b; background: rgba(255,255,255,0.7); }

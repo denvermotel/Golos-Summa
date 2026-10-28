@@ -13,7 +13,7 @@
   const KEY_ARCHIVE = 'golos:archive';
   const KEY_SETTINGS = 'golos:settings';
 
-  const SKINS = ['classic', 'finestra', 'mela'];
+  const SKINS = ['classic', 'finestra', 'mela', 'rilievo', 'vetro'];
   const SKIN_ALIASES = { windows: 'finestra', macos: 'mela' };
   const THEMES = ['auto', 'light', 'dark'];
   // Row kinds of the current engine plus those of 0.1.0 development tapes,
@@ -23,6 +23,10 @@
     'm-sub', 'm-total', 'gt-total', 't1-add', 't2-add', 't1-sub', 't2-sub', 't1-total', 't2-total',
     'sqrt-in', 'sqrt', 'clear', 'clear-all',
     'input', 'op', 'eq', 'cnt', 'm-recall', 'm-clear', 'pct', 'pct-amount', 'pct-simple'];
+  // DSEG7 has no comma, apostrophe or U+2212: the group mark is drawn by CSS
+  // (span.seg-tick), as the high tick between digits of the Logos 902 display
+  const SEGMENT_SEP = { group: "'", point: '.' };
+  const SEGMENT_OPTS = { minus: '-' };
   const OP_SYMBOLS = { '+': '+', '-': '−', '*': '×', '/': '÷',
     '−': '−', '×': '×', '÷': '÷' };
 
@@ -37,7 +41,8 @@
     currency: '€',
     currencyPos: 'after',
     advancedMode: false,
-    showHints: true
+    showHints: true,
+    displayFont: 'plain'
   };
 
   let settings = cloneSettings(DEFAULT_SETTINGS);
@@ -142,6 +147,7 @@
     if (raw.currencyPos === 'before' || raw.currencyPos === 'after') s.currencyPos = raw.currencyPos;
     if (typeof raw.advancedMode === 'boolean') s.advancedMode = raw.advancedMode;
     if (typeof raw.showHints === 'boolean') s.showHints = raw.showHints;
+    if (raw.displayFont === 'plain' || raw.displayFont === 'segment') s.displayFont = raw.displayFont;
     return s;
   }
 
@@ -330,6 +336,10 @@
   function appendRows(rows, firstIndex) {
     const roll = $('tape-roll');
     rows.forEach((r, k) => roll.appendChild(tapeRowElement(r, firstIndex + k)));
+    // paper feed: the reflow restarts the animation instead of queuing it
+    roll.classList.remove('feed');
+    void roll.offsetWidth;
+    roll.classList.add('feed');
     renderTapeHeader();
     renderMiniTape();
     scrollTapeToEnd();
@@ -422,19 +432,42 @@
 
   // ---------------------------------------------------------------- display
 
+  // Shrinks the number on its measured width: glyph widths differ a lot
+  // between fonts (segment digits are wider than monospace ones) and a
+  // cut-off amount would show wrong decimals. Hidden display: nothing to measure.
+  function fitDisplay() {
+    const main = $('disp-main');
+    main.style.fontSize = '';
+    if (!main.clientWidth || main.scrollWidth <= main.clientWidth) return;
+    const size = parseFloat(getComputedStyle(main).fontSize);
+    main.style.fontSize = Math.floor(size * main.clientWidth / main.scrollWidth) + 'px';
+  }
+
   function renderDisplay() {
     const disp = $('disp');
     const main = $('disp-main');
-    let text;
+    const segment = settings.skin === 'classic' && settings.displayFont === 'segment';
+    let text, spoken;
     if (calc.error) {
-      text = 'ERR';
+      text = spoken = 'ERR';
       $('disp-msg').textContent = t('err.' + calc.error);
     } else {
       $('disp-msg').textContent = '';
-      text = calc.hasEntry() ? E.formatEntry(calc.entryText(), I.sep()) : fmt(calc.x);
+      const show = (sep, opts) => calc.hasEntry() ? E.formatEntry(calc.entryText(), sep, opts)
+        : E.formatNumber(calc.x, settings.decimals, sep, opts);
+      spoken = show(I.sep());
+      text = segment ? show(SEGMENT_SEP, SEGMENT_OPTS) : spoken;
     }
-    main.textContent = text;
-    main.style.fontSize = text.length > 14 ? 'calc(var(--disp-size) * ' + (14 / text.length).toFixed(3) + ')' : '';
+    if (segment) {
+      main.replaceChildren(...text.split("'").flatMap((part, i) =>
+        i ? [el('span', 'seg-tick'), part] : [part]));
+    } else {
+      main.textContent = text;
+    }
+    $('disp-sr').textContent = spoken;
+    // the classic display turns red on negative values, like the Logos 902
+    disp.classList.toggle('neg', !calc.error && spoken.startsWith('\u2212'));
+    fitDisplay();
     disp.classList.toggle('error', !!calc.error);
     $('disp-pending').textContent = calc.md ? fmt(calc.md.a) + ' ' + OP_SYMBOLS[calc.md.op] : '';
     const regs = calc.regs;
@@ -778,6 +811,7 @@
     root.dataset.skin = settings.skin;
     const dark = settings.theme === 'dark' || (settings.theme === 'auto' && darkQuery && darkQuery.matches);
     root.dataset.theme = dark ? 'dark' : 'light';
+    root.dataset.dispFont = settings.displayFont;
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = getComputedStyle(root).getPropertyValue('--bg-header').trim().startsWith('#')
       ? getComputedStyle(root).getPropertyValue('--bg-header').trim()
@@ -813,9 +847,16 @@
     updateArchCount();
   }
 
+  // the display font choice exists only for the classic skin
+  function toggleDisplayFontRow() {
+    $('row-disp-font').hidden = $('set-skin').value !== 'classic';
+  }
+
   function fillSettingsForm() {
     $('set-skin').value = settings.skin;
     $('set-theme').value = settings.theme;
+    $('set-disp-font').value = settings.displayFont;
+    toggleDisplayFontRow();
     $('set-lang').value = I.language();
     $('set-advanced').checked = settings.advancedMode;
     $('set-hints').checked = settings.showHints;
@@ -830,6 +871,7 @@
     const s = cloneSettings(settings);
     s.skin = $('set-skin').value;
     s.theme = $('set-theme').value;
+    s.displayFont = $('set-disp-font').value;
     s.lang = $('set-lang').value;
     s.advancedMode = $('set-advanced').checked;
     s.showHints = $('set-hints').checked;
@@ -910,7 +952,18 @@
       document.querySelector('.app-main').dataset.view = b.dataset.view;
       document.querySelectorAll('.view-btn').forEach(x => x.classList.toggle('active', x === b));
       if (b.dataset.view === 'tape') scrollTapeToEnd();
+      else fitDisplay();
     }));
+    // refit when the display width changes (window, rotation, view switch);
+    // width only, since fitting changes the height
+    if (window.ResizeObserver) {
+      let lastWidth = -1;
+      new ResizeObserver(entries => {
+        const w = entries[0].contentRect.width;
+        if (w !== lastWidth) { lastWidth = w; fitDisplay(); }
+      }).observe($('disp-main'));
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitDisplay);
 
     document.querySelectorAll('.overlay').forEach(ov => {
       ov.addEventListener('click', (e) => {
@@ -921,6 +974,7 @@
     $('arch-export-btn').addEventListener('click', exportSelectedTapes);
     $('detail-restore').addEventListener('click', restoreDetail);
     $('btn-save-settings').addEventListener('click', saveSettingsForm);
+    $('set-skin').addEventListener('change', toggleDisplayFontRow);
     $('btn-export').addEventListener('click', exportAll);
     $('btn-import').addEventListener('click', () => $('import-file').click());
     $('import-file').addEventListener('change', (e) => {
@@ -1016,8 +1070,23 @@
     }).catch(() => { /* offline support is optional */ });
   }
 
+  // Installed app only: pinch and double-tap zoom break the fixed layout. In a
+  // browser tab zoom stays available for accessibility.
+  function lockZoomWhenInstalled() {
+    const installed = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) ||
+      navigator.standalone === true;
+    if (!installed) return;
+    const meta = document.querySelector('meta[name="viewport"]');
+    if (meta) meta.content += ', maximum-scale=1, user-scalable=no';
+    document.documentElement.classList.add('installed');
+    // iOS ignores user-scalable=no: block the pinch gesture itself
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+  }
+
   // ---------------------------------------------------------------- init
 
+  lockZoomWhenInstalled();
   load();
   bind();
   applySettings();
