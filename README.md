@@ -22,7 +22,8 @@ anche senza connessione.
 - Arrotondamento commerciale, decimali A, 0, 2, 3, 4, 5, F, 12 cifre.
 - Modalità Base e Avanzata (memoria, gran totale, radice, totalizzatori T1 e T2).
 - Archivio degli scontrini, stampa A4, backup JSON.
-- Skin Classica, Finestra e Mela, tema chiaro o scuro; italiano e inglese.
+- Cinque skin: Classica, Finestra, Mela, Rilievo e Vetro (Finestra e Mela anche in tema
+  scuro); italiano e inglese.
 
 ### Uso
 
@@ -49,7 +50,8 @@ calculators. It runs in the browser on PC and smartphone and can be installed as
 - Commercial rounding, decimals A, 0, 2, 3, 4, 5, F, 12 digits.
 - Basic and Advanced mode (memory, grand total, square root, T1 and T2 totalizers).
 - Tape archive, A4 printing, JSON backup.
-- Classica, Finestra and Mela skins, light or dark theme; Italian and English.
+- Five skins: Classica, Finestra, Mela, Rilievo and Vetro (Finestra and Mela also in a dark
+  theme); Italian and English.
 
 ### Usage
 
