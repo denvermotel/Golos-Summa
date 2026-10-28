@@ -350,6 +350,10 @@ kbd { font-family: var(--f-mono); }
 .k-eq { background: var(--key-eq); color: var(--key-eq-ink); font-size: 22px; font-weight: 700; }
 .k-md, .k-subtotal { font-size: 20px; }
 .k[data-k="total"] { font-size: 30px; }
+/* the asterisk is drawn: the U+2217 glyph differs too much between fonts */
+.k-star { width: 0.85em; height: 0.85em; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.k-line { display: inline-flex; align-items: center; gap: 1px; }
+.k-line .k-star { width: 0.75em; height: 0.75em; stroke-width: 2.6; }
 .k[data-k="total"] .k-sub, .k-subtotal .k-sub { font-size: 10px; }
 .k-eq:active, .k-eq.pressed { background: var(--key-eq-press); }
 .k-tot { color: #fff; font-size: 12px; font-weight: 700; }
@@ -500,7 +504,7 @@ body.hints-off .hints-show { display: block; }
   .brand-mark { font-size: 18px; }
   .view-switch { display: flex; background: var(--line); border-radius: 8px; padding: 2px; }
   .view-btn { font-size: 12px; padding: 5px 10px; border-radius: 6px; color: var(--ink-muted); }
-  .view-btn.active { background: var(--bg-paper); color: var(--ink); font-weight: 600; }
+  .view-btn.active { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
   .hbtn { padding: 7px 8px; }
   .app-main { grid-template-columns: minmax(0, 1fr); }
   .tape-zone, .calc-zone { min-width: 0; }

@@ -527,10 +527,15 @@
           // First press clears the calculation (accumulator, open operations,
           // error). A second consecutive press also clears T1 and T2. Memory
           // and grand total have their own keys (M*, GT), as on the Logos.
+          // A row is printed only when something was actually cleared, so
+          // repeated presses do not fill the tape.
+          const r = this.regs;
           if (prev === 'clear') {
-            Object.assign(this.regs, { t1: 0, t2: 0, cnt1: 0, cnt2: 0 });
-            row({ kind: 'clear-all' });
-          } else {
+            if (r.t1 || r.t2 || r.cnt1 || r.cnt2) {
+              Object.assign(r, { t1: 0, t2: 0, cnt1: 0, cnt2: 0 });
+              row({ kind: 'clear-all' });
+            }
+          } else if (this.acc || this.cnt || this.md || this.error || this.constant) {
             row({ kind: 'clear', value: 0 });
           }
           this.x = 0;
