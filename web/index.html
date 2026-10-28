@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="it" data-skin="classic">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f1d1c">
+<meta name="description" content="Golos-Summa - printing calculator">
+<title>Golos-Summa</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="skins.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <span class="brand-mark">Golos-Summa</span>
+    <span class="brand-tag" data-i18n="app.tagline"></span>
+    <span class="brand-version" id="app-version"></span>
+  </div>
+  <nav class="view-switch" aria-label="view">
+    <button class="view-btn" data-view="tape" data-i18n="header.tape"></button>
+    <button class="view-btn active" data-view="calc" data-i18n="header.calc"></button>
+  </nav>
+  <div class="header-actions">
+    <div class="mode-toggle">
+      <span data-i18n="mode.basic"></span>
+      <button class="mode-switch" id="mode-switch" role="switch" aria-checked="false" data-i18n-title="mode.toggle" data-i18n-aria="mode.toggle"></button>
+      <span data-i18n="mode.advanced"></span>
+    </div>
+    <button class="hbtn" id="btn-tear" data-i18n-title="header.newTape.title">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke-dasharray="2 2"/></svg>
+      <span class="hbtn-label" data-i18n="header.newTape"></span>
+    </button>
+    <button class="hbtn" id="btn-archive" data-i18n-title="header.archive.title">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13H3z"/><path d="M3 7l3-3h12l3 3"/></svg>
+      <span class="hbtn-label" data-i18n="header.archive"></span>
+      <span class="hbtn-count" id="arch-count"></span>
+    </button>
+    <button class="hbtn" id="btn-print" data-i18n-title="header.print.title">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg>
+      <span class="hbtn-label" data-i18n="header.print"></span>
+    </button>
+    <button class="hbtn" id="btn-settings" data-i18n-title="header.settings" data-i18n-aria="header.settings">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="app-main" data-view="calc">
+
+  <section class="tape-zone">
+    <div class="tape-meta">
+      <input class="tape-title-input" id="tape-title" type="text" maxlength="80" data-i18n-placeholder="tape.titlePlaceholder" data-i18n-aria="tape.titlePlaceholder">
+      <span class="tape-date" id="tape-date">-</span>
+      <span class="tape-counter" id="tape-counter"></span>
+    </div>
+    <div class="tape-paper">
+      <div class="tape-scroll" id="tape-scroll">
+        <div class="tape-roll" id="tape-roll" role="list"></div>
+        <div class="tape-empty" id="tape-empty">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg>
+          <span data-i18n="tape.emptyTitle"></span>
+          <span class="tape-empty-hint" data-i18n="tape.emptyHint"></span>
+        </div>
+      </div>
+      <div class="tape-foot">
+        <span class="label" data-i18n="tape.currentTotal"></span>
+        <span class="value" id="tape-total"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="calc-zone basic-mode" id="calc-zone">
+    <div class="disp" id="disp">
+      <div class="disp-status">
+        <div class="status-group">
+          <span class="ind k-advanced" id="ind-m">M</span>
+          <span class="ind k-advanced" id="ind-gt">GT</span>
+          <span class="ind k-advanced" id="ind-t1">T1</span>
+          <span class="ind k-advanced" id="ind-t2">T2</span>
+          <span class="ind" id="ind-acc">&Sigma;</span>
+        </div>
+        <div class="status-group">
+          <span class="ind on" id="ind-iva"></span>
+          <span class="ind on" id="ind-dec"></span>
+        </div>
+      </div>
+      <div class="disp-main" id="disp-main" aria-live="polite">0</div>
+      <div class="disp-sub">
+        <span class="pending" id="disp-pending"></span>
+        <span class="disp-msg" id="disp-msg" role="alert"></span>
+      </div>
+    </div>
+
+    <div class="selectors">
+      <div class="sel-group">
+        <div class="sel-label" data-i18n="disp.decimals"></div>
+        <div class="sel-row" id="sel-dec">
+          <button class="sel-btn" data-dec="A">A</button>
+          <button class="sel-btn" data-dec="0">0</button>
+          <button class="sel-btn" data-dec="2">2</button>
+          <button class="sel-btn" data-dec="3">3</button>
+          <button class="sel-btn" data-dec="4">4</button>
+          <button class="sel-btn" data-dec="5">5</button>
+          <button class="sel-btn" data-dec="F">F</button>
+        </div>
+      </div>
+      <div class="sel-group">
+        <div class="sel-label" data-i18n="disp.vat"></div>
+        <div class="sel-row" id="sel-iva">
+          <button class="sel-btn" data-iva="0"></button>
+          <button class="sel-btn" data-iva="1"></button>
+          <button class="sel-btn" data-iva="2"></button>
+          <button class="sel-btn" data-iva="3"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="keypad" id="keypad">
+      <button class="k k-fn k-advanced" data-k="mplus" data-cmd="mPlus" data-i18n-title="tip.mPlus">M+</button>
+      <button class="k k-fn k-advanced" data-k="mminus" data-cmd="mMinus" data-i18n-title="tip.mMinus">M&minus;</button>
+      <button class="k k-fn k-advanced" data-k="msub" data-cmd="mSub" data-i18n-title="tip.mSub">M&#9671;</button>
+      <button class="k k-fn k-advanced" data-k="mtotal" data-cmd="mTotal" data-i18n-title="tip.mTotal">M&lowast;</button>
+      <button class="k k-fn k-advanced" data-k="gt" data-cmd="gt" data-i18n-title="tip.gt">GT</button>
+      <button class="k k-fn k-advanced" data-k="sqrt" data-cmd="sqrt" data-i18n-title="tip.sqrt">&radic;</button>
+
+      <button class="k k-fn" data-k="taxplus" data-cmd="taxPlus" data-i18n-title="tip.taxPlus">TAX+<span class="k-iva-current"></span></button>
+      <button class="k k-fn" data-k="taxminus" data-cmd="taxMinus" data-i18n-title="tip.taxMinus">TAX&minus;<span class="k-iva-current"></span></button>
+      <button class="k k-fn" data-k="percent" data-cmd="percent" data-i18n-title="tip.percent">%</button>
+      <button class="k k-fn" data-k="sign" data-cmd="neg" data-i18n-title="tip.sign">&plusmn;</button>
+      <button class="k k-fn" data-k="clear" data-cmd="clear" data-i18n-title="tip.clear">C</button>
+
+      <button class="k k-fn" data-k="ce" data-entry="ce" data-i18n-title="tip.ce">CE</button>
+      <button class="k k-fn" data-k="bksp" data-entry="bksp" data-i18n-title="tip.bksp" aria-label="Backspace">&larr;</button>
+      <button class="k k-fn k-md" data-k="div" data-cmd="mul" data-op="/" data-i18n-title="tip.div">&divide;</button>
+      <button class="k k-fn k-md" data-k="mul" data-cmd="mul" data-op="*" data-i18n-title="tip.mul">&times;</button>
+      <button class="k k-fn k-subtotal" data-k="sub" data-cmd="sub" data-i18n-title="tip.sub">&#9671;<span class="k-sub" data-i18n="key.subtotal"></span></button>
+
+      <button class="k k-num" data-k="n7" data-digit="7">7</button>
+      <button class="k k-num" data-k="n8" data-digit="8">8</button>
+      <button class="k k-num" data-k="n9" data-digit="9">9</button>
+      <button class="k k-op" data-k="minus" data-cmd="add" data-sign="-1" data-i18n-title="tip.minus">&minus;</button>
+      <button class="k k-eq" data-k="total" data-cmd="total" data-i18n-title="tip.total">&lowast;<span class="k-sub" data-i18n="key.total"></span></button>
+
+      <button class="k k-num" data-k="n4" data-digit="4">4</button>
+      <button class="k k-num" data-k="n5" data-digit="5">5</button>
+      <button class="k k-num" data-k="n6" data-digit="6">6</button>
+      <button class="k k-op" data-k="plus" data-cmd="add" data-sign="1" data-i18n-title="tip.plus">+</button>
+      <button class="k k-fn k-md" data-k="eq" data-cmd="eq" data-i18n-title="tip.eq">=</button>
+
+      <button class="k k-num" data-k="n1" data-digit="1">1</button>
+      <button class="k k-num" data-k="n2" data-digit="2">2</button>
+      <button class="k k-num" data-k="n3" data-digit="3">3</button>
+      <button class="k k-num" data-k="n0" data-digit="0">0</button>
+      <button class="k k-num" data-k="n00" data-digit="00" data-i18n-title="tip.doubleZero">00</button>
+      <button class="k k-num k-point" data-k="point" data-entry="point" data-i18n-title="tip.point">,</button>
+
+      <button class="k k-tot t1 k-advanced" data-k="t1plus" data-cmd="t1" data-sign="1" data-i18n-title="tip.t1Plus">+T1</button>
+      <button class="k k-tot t1 k-advanced" data-k="t1minus" data-cmd="t1" data-sign="-1" data-i18n-title="tip.t1Minus">&minus;T1</button>
+      <button class="k k-tot t1 k-advanced" data-k="sub1" data-cmd="sub1" data-i18n-title="tip.sub1">T1&#9671;</button>
+      <button class="k k-tot t1 k-advanced" data-k="tot1" data-cmd="tot1" data-i18n-title="tip.tot1">T1&lowast;</button>
+      <button class="k k-tot t2 k-advanced" data-k="t2plus" data-cmd="t2" data-sign="1" data-i18n-title="tip.t2Plus">+T2</button>
+      <button class="k k-tot t2 k-advanced" data-k="tot2" data-cmd="tot2" data-i18n-title="tip.tot2">T2&lowast;</button>
+    </div>
+  </section>
+</main>
+
+<div class="hints-area" id="hints-area">
+  <div class="hints-content">
+    <div class="hint-group">
+      <span class="hint-item"><kbd>+ -</kbd><span data-i18n="hint.add"></span></span>
+      <span class="hint-item"><kbd>S</kbd><span data-i18n="hint.subtotal"></span></span>
+      <span class="hint-item"><kbd>T</kbd><span data-i18n="hint.total"></span></span>
+      <span class="hint-item"><kbd>* /</kbd><kbd>Enter</kbd><span data-i18n="hint.muldiv"></span></span>
+      <span class="hint-item"><kbd>I</kbd><kbd>Shift+I</kbd><span data-i18n="hint.tax"></span></span>
+    </div>
+    <div class="hint-group k-advanced">
+      <span class="hint-item"><kbd>M</kbd><kbd>Shift+M</kbd><span data-i18n="hint.memory"></span></span>
+      <span class="hint-item"><kbd>F7-F10</kbd><span data-i18n="hint.t1"></span></span>
+    </div>
+    <div class="hint-group">
+      <span class="hint-item"><kbd>Ctrl+Enter</kbd><span data-i18n="hint.newTape"></span></span>
+      <span class="hint-item"><kbd>Alt+A</kbd><span data-i18n="hint.advanced"></span></span>
+    </div>
+  </div>
+  <button class="hints-toggle" id="hints-toggle" data-i18n="hint.hide"></button>
+</div>
+<button class="hints-show" id="hints-show" data-i18n="hint.show"></button>
+
+<!-- ARCHIVE -->
+<div class="overlay" id="ov-archive" role="dialog" aria-modal="true" aria-labelledby="arch-h">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="arch-h" data-i18n="archive.title"></h2>
+      <button class="close" data-close data-i18n-aria="common.close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="archive-toolbar">
+        <input type="search" id="arch-search" data-i18n-placeholder="archive.search" data-i18n-aria="archive.search">
+        <span class="archive-info" id="arch-info"></span>
+      </div>
+      <div class="archive-list" id="arch-list"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close data-i18n="common.close"></button>
+      <button class="btn btn-primary" id="arch-export-btn" data-i18n="archive.exportSelected" disabled></button>
+    </div>
+  </div>
+</div>
+
+<!-- TAPE DETAIL -->
+<div class="overlay" id="ov-detail" role="dialog" aria-modal="true" aria-labelledby="detail-h">
+  <div class="modal modal-narrow">
+    <div class="modal-head">
+      <h2 id="detail-h"></h2>
+      <button class="close" data-close data-i18n-aria="common.close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-date" id="detail-date"></div>
+      <div class="print-receipt-rows detail-rows" id="detail-rows"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close data-i18n="common.close"></button>
+      <button class="btn btn-primary" id="detail-restore" data-i18n="archive.restore"></button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="overlay" id="ov-settings" role="dialog" aria-modal="true" aria-labelledby="set-h">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="set-h" data-i18n="settings.title"></h2>
+      <button class="close" data-close data-i18n-aria="common.close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="settings-grid">
+        <div class="set-group">
+          <h3 data-i18n="settings.appearance"></h3>
+          <label class="set-row"><span data-i18n="settings.skin"></span>
+            <select id="set-skin">
+              <option value="classic">Classica</option>
+              <option value="finestra">Finestra</option>
+              <option value="mela">Mela</option>
+            </select>
+          </label>
+          <label class="set-row"><span data-i18n="settings.theme"></span>
+            <select id="set-theme">
+              <option value="auto" data-i18n="settings.theme.auto"></option>
+              <option value="light" data-i18n="settings.theme.light"></option>
+              <option value="dark" data-i18n="settings.theme.dark"></option>
+            </select>
+          </label>
+          <label class="set-row"><span data-i18n="settings.language"></span>
+            <select id="set-lang">
+              <option value="it">Italiano</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+          <label class="set-row"><span data-i18n="settings.advancedDefault"></span><input type="checkbox" id="set-advanced"></label>
+          <label class="set-row"><span data-i18n="settings.showHints"></span><input type="checkbox" id="set-hints"></label>
+        </div>
+        <div class="set-group">
+          <h3 data-i18n="settings.display"></h3>
+          <label class="set-row"><span data-i18n="settings.decimals"></span>
+            <select id="set-decimals">
+              <option value="A" data-i18n="settings.decimals.A"></option>
+              <option value="0">0</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option>
+              <option value="F" data-i18n="settings.decimals.F"></option>
+            </select>
+          </label>
+          <label class="set-row"><span data-i18n="settings.rounding"></span>
+            <select id="set-rounding">
+              <option value="down" data-i18n="settings.rounding.down"></option>
+              <option value="half" data-i18n="settings.rounding.half"></option>
+              <option value="up" data-i18n="settings.rounding.up"></option>
+            </select>
+          </label>
+          <label class="set-row"><span data-i18n="settings.currency"></span><input type="text" id="set-currency" maxlength="3"></label>
+          <label class="set-row"><span data-i18n="settings.currencyPos"></span>
+            <select id="set-currency-pos">
+              <option value="after" data-i18n="settings.currencyPos.after"></option>
+              <option value="before" data-i18n="settings.currencyPos.before"></option>
+            </select>
+          </label>
+          <h3 class="set-sub" data-i18n="settings.vatPresets"></h3>
+          <div class="iva-presets">
+            <label>1<input type="number" id="set-iva-0" min="0" max="100" step="0.1"></label>
+            <label>2<input type="number" id="set-iva-1" min="0" max="100" step="0.1"></label>
+            <label>3<input type="number" id="set-iva-2" min="0" max="100" step="0.1"></label>
+            <label>4<input type="number" id="set-iva-3" min="0" max="100" step="0.1"></label>
+          </div>
+        </div>
+      </div>
+      <div class="set-group set-data">
+        <h3 data-i18n="settings.data"></h3>
+        <div class="set-row"><span data-i18n="settings.export"></span><button class="btn btn-ghost" id="btn-export" data-i18n="settings.exportBtn"></button></div>
+        <div class="set-row"><span data-i18n="settings.import"></span><button class="btn btn-ghost" id="btn-import" data-i18n="settings.importBtn"></button>
+          <input type="file" id="import-file" accept=".json,application/json" hidden></div>
+        <div class="set-row"><span class="danger-text" data-i18n="settings.wipe"></span><button class="btn btn-danger" id="btn-wipe" data-i18n="settings.wipeBtn"></button></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close data-i18n="common.cancel"></button>
+      <button class="btn btn-primary" id="btn-save-settings" data-i18n="common.save"></button>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT -->
+<div class="overlay" id="ov-print" role="dialog" aria-modal="true" aria-labelledby="print-h">
+  <div class="modal modal-wide">
+    <div class="modal-head">
+      <h2 id="print-h" data-i18n="print.title"></h2>
+      <button class="close" data-close data-i18n-aria="common.close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="print-controls">
+        <label><span data-i18n="print.columns"></span>
+          <select id="prn-cols"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select>
+        </label>
+        <label class="grow"><span data-i18n="print.pageTitle"></span><input type="text" id="prn-title"></label>
+        <label><input type="checkbox" id="prn-include-current"><span data-i18n="print.includeCurrent"></span></label>
+      </div>
+      <div class="print-hint" data-i18n="print.selectHint"></div>
+      <div class="archive-list" id="prn-list"></div>
+      <div class="print-hint" data-i18n="print.preview"></div>
+      <div class="print-preview-frame"><div class="print-page" id="prn-preview"></div></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" data-close data-i18n="common.cancel"></button>
+      <button class="btn btn-primary" id="btn-do-print" data-i18n="print.print"></button>
+    </div>
+  </div>
+</div>
+
+<div class="print-area" id="print-area"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="engine.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
