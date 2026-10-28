@@ -1,8 +1,42 @@
 # Golos-Summa
 
-[Italiano](#italiano) | [English](#english)
+[English](#english) | [Italiano](#italiano)
 
-**App:** https://denvermotel.github.io/Golos-Summa/ · **Versione / Version:** 0.1.1
+**App:** https://denvermotel.github.io/Golos-Summa/ · **Version / Versione:** 0.1.1
+
+---
+
+## English
+
+Printing calculator for accounting and finance, inspired by the Olivetti Logos printing
+calculators. It runs in the browser on PC and smartphone and can be installed as an app
+(PWA), offline too.
+
+### Features
+
+- Adding-machine logic: `+` and `-` add at once, `◇` subtotal, `∗` total, repeated add;
+  `×` and `÷` are closed by `=`; constant calculation.
+- Percent add-on and discount, VAT add (TAX+) and removal (TAX-) with four rates.
+- Paper tape with editable rows: change an amount and everything is recalculated.
+- Commercial rounding, decimals A, 0, 2, 3, 4, 5, F, 12 digits.
+- Basic and Advanced mode (memory, grand total, square root, T1 and T2 totalizers).
+- Tape archive, A4 printing, JSON backup.
+- Five skins: Classica, Finestra, Mela, Rilievo and Vetro (Finestra and Mela also in a dark
+  theme); Italian and English.
+- Classica skin display with a Plain or Segments font (slanted, with the thousands mark as on
+  the Logos 902); red background for negative values.
+- Light key vibration on Android and a short haptic tap on iPhone (iOS 18 or later), can be
+  turned off in the settings.
+- Updates: once a day the app checks for a new version and shows a bar with Update and
+  Later.
+
+### Usage
+
+Open the address above, or download the `web/` folder and open `index.html`. You can
+install it as an app from the browser. Your data stays in your browser only.
+
+Keyboard: digits, `+` `-` `*` `/`, `S` subtotal, `T` or `Enter` total, `I` and `Shift+I`
+VAT, `Ctrl+Enter` new tape, `Alt+A` advanced mode.
 
 ---
 
@@ -41,43 +75,9 @@ IVA, `Ctrl+Invio` nuovo scontrino, `Alt+A` modalità avanzata.
 
 ---
 
-## English
+## License / Licenza
 
-Printing calculator for accounting and finance, inspired by the Olivetti Logos printing
-calculators. It runs in the browser on PC and smartphone and can be installed as an app
-(PWA), offline too.
+GNU General Public License v3.0, see / vedi [LICENSE](LICENSE).
 
-### Features
-
-- Adding-machine logic: `+` and `-` add at once, `◇` subtotal, `∗` total, repeated add;
-  `×` and `÷` are closed by `=`; constant calculation.
-- Percent add-on and discount, VAT add (TAX+) and removal (TAX-) with four rates.
-- Paper tape with editable rows: change an amount and everything is recalculated.
-- Commercial rounding, decimals A, 0, 2, 3, 4, 5, F, 12 digits.
-- Basic and Advanced mode (memory, grand total, square root, T1 and T2 totalizers).
-- Tape archive, A4 printing, JSON backup.
-- Five skins: Classica, Finestra, Mela, Rilievo and Vetro (Finestra and Mela also in a dark
-  theme); Italian and English.
-- Classica skin display with a Plain or Segments font (slanted, with the thousands mark as on
-  the Logos 902); red background for negative values.
-- Light key vibration on Android and a short haptic tap on iPhone (iOS 18 or later), can be
-  turned off in the settings.
-- Updates: once a day the app checks for a new version and shows a bar with Update and
-  Later.
-
-### Usage
-
-Open the address above, or download the `web/` folder and open `index.html`. You can
-install it as an app from the browser. Your data stays in your browser only.
-
-Keyboard: digits, `+` `-` `*` `/`, `S` subtotal, `T` or `Enter` total, `I` and `Shift+I`
-VAT, `Ctrl+Enter` new tape, `Alt+A` advanced mode.
-
----
-
-## Licenza / License
-
-GNU General Public License v3.0, vedi / see [LICENSE](LICENSE).
-
-Olivetti e Logos sono marchi dei rispettivi titolari; questo progetto non è affiliato.
 Olivetti and Logos are trademarks of their respective owners; this project is not affiliated.
+Olivetti e Logos sono marchi dei rispettivi titolari; questo progetto non è affiliato.
