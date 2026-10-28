@@ -2,7 +2,7 @@
 
 [Italiano](#italiano) | [English](#english)
 
-**App:** https://denvermotel.github.io/Golos-Summa/
+**App:** https://denvermotel.github.io/Golos-Summa/ · **Versione / Version:** 0.1.1
 
 ---
 
@@ -24,6 +24,12 @@ anche senza connessione.
 - Archivio degli scontrini, stampa A4, backup JSON.
 - Cinque skin: Classica, Finestra, Mela, Rilievo e Vetro (Finestra e Mela anche in tema
   scuro); italiano e inglese.
+- Display della skin Classica con carattere Normale oppure Segmenti (corsivo, con il segno
+  delle migliaia come sulla Logos 902); fondo rosso con i valori negativi.
+- Vibrazione leggera alla pressione dei tasti su Android e piccolo colpo tattile su iPhone
+  (iOS 18 o successivo), disattivabile nelle impostazioni.
+- Aggiornamenti: una volta al giorno l'app controlla se c'è una versione nuova e mostra una
+  barra con Aggiorna e Più tardi.
 
 ### Uso
 
@@ -52,6 +58,12 @@ calculators. It runs in the browser on PC and smartphone and can be installed as
 - Tape archive, A4 printing, JSON backup.
 - Five skins: Classica, Finestra, Mela, Rilievo and Vetro (Finestra and Mela also in a dark
   theme); Italian and English.
+- Classica skin display with a Plain or Segments font (slanted, with the thousands mark as on
+  the Logos 902); red background for negative values.
+- Light key vibration on Android and a short haptic tap on iPhone (iOS 18 or later), can be
+  turned off in the settings.
+- Updates: once a day the app checks for a new version and shows a bar with Update and
+  Later.
 
 ### Usage
 
